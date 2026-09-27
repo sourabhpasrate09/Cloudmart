@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudmart-config
+  namespace: cloudmart
+data:
+  DB_NAME: cloudmart
+  DB_USER: cloudmart_user
+  CORS_ORIGINS: "*"

@@ -1,0 +1,23 @@
+name: CloudMart CI
+on:
+  push:
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.12"}
+      - name: Validate Python
+        run: python -m py_compile backend/app/*.py
+      - name: Validate JavaScript
+        run: node --check frontend/script.js
+      - name: Validate Terraform
+        uses: hashicorp/setup-terraform@v3
+      - run: terraform -chdir=terraform/aws fmt -check -recursive
+      - run: terraform -chdir=terraform/aws init -backend=false
+      - run: terraform -chdir=terraform/aws validate
+      - name: Build Docker images
+        run: docker compose build

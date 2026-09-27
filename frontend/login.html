@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Customer Login | CloudMart</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="login">
+<header class="topbar"><div class="container toprow"><a class="logo" href="index.html">Cloud<span>Mart</span></a><div class="deliver"><small>📍 Delivering to</small><strong>India</strong></div><form class="search-wrap" id="globalSearch"><select id="categorySelect" class="search-all"><option>All</option></select><input id="searchInput" class="search-box" placeholder="Search CloudMart products, brands and more"><button class="search-btn">🔍</button><div id="searchSuggestions" class="search-suggestions"></div></form><a class="account" href="login.html"><small>Hello, Shopper</small><strong>Sign in &amp; Orders</strong></a><a class="cart-link" href="cart.html">🛒 <span class="cart-count">0</span></a></div></header>
+<nav class="menu"><div class="container"><a href="products.html">All Products</a><a href="deals.html">Deals</a><a href="collection-latest-tech.html">Latest Tech</a><a href="collection-trending-shoes.html">Trending Shoes</a><a href="collection-home-furniture.html">Home &amp; Furniture</a><a href="category-smartphones.html">Smartphones</a><a href="category-watches.html">Watches</a><a href="orders.html">Your Orders</a></div></nav>
+<main class="page login-page"><div class="container auth-shell">
+  <div class="auth-hero"><div class="section-eyebrow">CLOUDMART CUSTOMER ACCOUNT</div><h1>Sign in and keep your shopping history in one place.</h1><p>Save your customer details, view orders and quickly buy products again.</p><div class="auth-benefits"><span>✓ Order history</span><span>✓ Faster checkout</span><span>✓ Buy again</span><span>✓ Secure password storage</span></div></div>
+  <div class="auth-card" id="authPanel">
+    <div class="auth-card-head"><h2>Customer Login</h2><p>Use your CloudMart email and password.</p></div>
+    <form id="loginForm" class="auth-form"><label>Email<input id="loginEmail" type="email" required autocomplete="email"></label><label>Password<input id="loginPassword" type="password" required minlength="6" autocomplete="current-password"></label><button class="btn" type="submit">Sign in</button></form>
+    <div class="auth-divider"><span>New to CloudMart?</span></div>
+    <form id="registerForm" class="auth-form"><label>Full name<input id="regName" required autocomplete="name"></label><label>Email<input id="regEmail" type="email" required autocomplete="email"></label><label>Phone <span class="muted">(optional)</span><input id="regPhone" autocomplete="tel"></label><label>Create password<input id="regPassword" type="password" required minlength="6" autocomplete="new-password"></label><button class="btn secondary" type="submit">Create your CloudMart account</button></form>
+    <div id="authMessage" class="auth-message"></div>
+    <p class="auth-footnote">This is a demo customer account system for the CloudMart learning project. Passwords are stored as salted hashes in MySQL; no real payment credentials are stored.</p>
+  </div>
+  <div class="auth-card" id="loggedInPanel" style="display:none"><div class="auth-card-head"><h2>You are signed in</h2><p>Your customer account is active on this browser.</p></div><div class="logged-user" id="loggedUserDetails"></div><div class="auth-actions"><a class="btn" href="orders.html">View Your Orders</a><a class="btn secondary" href="products.html">Continue Shopping</a><button class="btn secondary" id="logoutBtn" type="button">Sign out</button></div></div>
+</div></main>
+<footer class="footer"><div class="container footer-grid"><div><h3>CloudMart</h3><p>AWS learning marketplace project.</p></div><div><h3>Shop</h3><a href="products.html">All Products</a><a href="deals.html">Deals</a></div><div><h3>Categories</h3><a href="category-shoes.html">Shoes</a><a href="category-furniture.html">Furniture</a><a href="category-smartphones.html">Smartphones</a><a href="category-watches.html">Watches</a></div><div><h3>Account</h3><a href="orders.html">Orders</a><a href="cart.html">Cart</a><a href="login.html">Customer Login</a></div></div><div class="container copyright">© 2026 CloudMart</div></footer>
+<div id="toast" class="toast"></div><script src="config.js"></script><script src="product-data.js"></script><script src="script.js"></script>
+</body>
+</html>

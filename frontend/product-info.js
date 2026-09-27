@@ -1,0 +1,1 @@
+window.CLOUDMART_PRODUCT_INFO={};

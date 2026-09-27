@@ -1,0 +1,6 @@
+aws_region="ap-south-1"
+project_name="cloudmart"
+db_username="cloudmart_user"
+db_password="CHANGE_ME"
+backend_image="ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/cloudmart-backend:latest"
+frontend_image="ACCOUNT.dkr.ecr.ap-south-1.amazonaws.com/cloudmart-frontend:latest"

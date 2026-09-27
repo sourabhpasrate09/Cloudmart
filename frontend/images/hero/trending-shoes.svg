@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480">
+<rect width="800" height="480" rx="28" fill="#f3f6fa"/>
+<circle cx="400" cy="205" r="115" fill="white" stroke="#ff5b2e" stroke-width="7"/>
+<text x="400" y="210" text-anchor="middle" font-family="Arial" font-size="34" font-weight="700" fill="#17243a">Trending Shoes</text>
+<text x="400" y="250" text-anchor="middle" font-family="Arial" font-size="18" fill="#667085">CloudMart collection</text>
+</svg>

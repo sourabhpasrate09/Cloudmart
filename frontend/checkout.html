@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Checkout | CloudMart</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="checkout">
+<header class="topbar">
+  <div class="container toprow">
+    <a class="logo" href="index.html">Cloud<span>Mart</span></a>
+    <div class="deliver"><small>📍 Delivering to</small><strong>India</strong></div>
+    <form class="search-wrap" id="globalSearch"><select id="categorySelect" class="search-all"><option>All</option></select><input id="searchInput" class="search-box" placeholder="Search CloudMart products, brands and more" autocomplete="off"><button class="search-btn">🔍</button><div id="searchSuggestions" class="search-suggestions"></div></form>
+    <a class="account" href="login.html"><small>Hello, Shopper</small><strong>Sign in &amp; Orders</strong></a>
+    <a class="cart-link" href="cart.html">🛒 <span class="cart-count">0</span></a>
+  </div>
+</header>
+<nav class="menu"><div class="container"><a href="products.html">All Products</a><a href="deals.html">Deals</a><a href="collection-latest-tech.html">Latest Tech</a><a href="collection-trending-shoes.html">Trending Shoes</a><a href="collection-home-furniture.html">Home &amp; Furniture</a><a href="category-smartphones.html">Smartphones</a><a href="category-watches.html">Watches</a><a href="orders.html">Your Orders</a></div></nav>
+
+<main class="page checkout-page">
+  <div class="container">
+    <div class="checkout-promo">
+      <div><strong>Save more with CloudMart grouped delivery</strong><span>₹20 back for every eligible additional item. Shop more and save.</span></div>
+      <a href="products.html">Shop deals →</a>
+    </div>
+
+    <div id="checkoutLoginNotice" class="checkout-login-note">
+      <span>👤</span><div><strong>Sign in for a faster checkout</strong><p>Your name, contact details and future orders can be saved to your CloudMart customer account.</p></div><a class="btn secondary" href="login.html?return=checkout.html">Sign in / Create account</a>
+    </div>
+
+    <div class="checkout-layout">
+      <section>
+        <form id="checkoutForm">
+          <div class="checkout-step amazon-step">
+            <div class="step-number">1</div>
+            <div class="step-body">
+              <h2>Shipping address</h2>
+              <p class="step-help">Enter the address where you want your CloudMart order delivered.</p>
+              <div class="form-grid">
+                <label>Name<input id="customerName" autocomplete="name" required></label>
+                <label>Email<input id="customerEmail" type="email" autocomplete="email"></label>
+                <label>Phone<input id="customerPhone" autocomplete="tel" required></label>
+              </div>
+              <label>Address<textarea id="shippingAddress" rows="4" autocomplete="street-address" required></textarea></label>
+              <div class="delivery-note"><strong>FREE Delivery</strong> on eligible items. Delivery estimates may vary by item and location.</div>
+            </div>
+          </div>
+
+          <div class="checkout-step amazon-step">
+            <div class="step-number">2</div>
+            <div class="step-body">
+              <h2>Payment method</h2>
+              <p class="step-help">Choose how you'd like to pay. Payments are demo-only in this learning project.</p>
+              <div class="payment-method-list">
+                <label class="payment-option"><input type="radio" name="paymentMethod" value="COD" checked><span class="payment-copy"><strong>Cash on Delivery</strong><small>Pay when your order arrives</small></span></label>
+                <label class="payment-option"><input type="radio" name="paymentMethod" value="UPI"><span class="payment-copy"><strong>UPI</strong><small>Pay using any supported UPI app</small></span></label>
+                <label class="payment-option"><input type="radio" name="paymentMethod" value="CARD"><span class="payment-copy"><strong>Credit or debit card</strong><small>Visa, Mastercard and RuPay supported</small></span></label>
+              </div>
+
+              <div id="payUPI" class="payment-fields payment-demo-panel" style="display:none">
+                <label>UPI ID<input id="upiId" placeholder="yourname@upi" autocomplete="off"></label>
+                <div class="payment-info">🔒 Demo UPI flow — no real money is charged.</div>
+              </div>
+
+              <div id="payCard" class="payment-fields payment-demo-panel" style="display:none">
+                <div class="card-brand-row">
+                  <span>Accepted cards</span>
+                  <div class="payment-brands" aria-label="Accepted cards">
+                    <span class="pay-logo visa-logo">VISA</span>
+                    <span class="pay-logo mastercard-logo"><i></i><i></i><b>mastercard</b></span>
+                    <span class="pay-logo rupay-logo">RuPay</span>
+                  </div>
+                </div>
+                <label>Card number<input id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="23" inputmode="numeric" autocomplete="cc-number"></label>
+                <div class="inline-fields"><label>Expiry<input id="cardExpiry" placeholder="MM/YY" maxlength="5" inputmode="numeric" autocomplete="cc-exp"></label><label>CVV<input id="cardCvv" placeholder="CVV" maxlength="4" inputmode="numeric" autocomplete="cc-csc"></label></div>
+                <div class="card-meta"><span id="cardBrandHint">CARD</span><small>Demo checkout · do not enter a real card.</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="checkout-step amazon-step">
+            <div class="step-number">3</div>
+            <div class="step-body">
+              <h2>Order notes</h2>
+              <textarea id="orderNotes" rows="3" placeholder="Delivery instructions (optional)"></textarea>
+            </div>
+          </div>
+
+          <button class="btn checkout-submit" id="placeOrderBtn" type="submit">Place Your Order →</button>
+          <div id="orderSuccess"></div>
+        </form>
+      </section>
+
+      <aside class="checkout-side">
+        <div class="checkout-summary amazon-summary">
+          <h2>Order Summary</h2>
+          <div id="checkoutSummary"></div>
+          <div class="summary-line"><span id="summaryItemCount">Items (0)</span><strong id="checkoutSubtotal">₹0</strong></div>
+          <div class="summary-line"><span>Delivery</span><strong class="free-delivery">FREE</strong></div>
+          <div class="summary-total"><span>Order total</span><strong id="checkoutTotal">₹0</strong></div>
+          <div class="secure-note">🔒 Secure transaction · Demo checkout</div>
+        </div>
+        <div class="checkout-ad-card"><div class="ad-label">CLOUDMART DEAL</div><h3>Extra savings on everyday shopping</h3><p>Discover discounted shoes, smartphones, watches, home products and more.</p><a href="deals.html">See today's deals →</a></div>
+      </aside>
+    </div>
+
+    <section class="checkout-deals-section">
+      <div class="recommendation-heading">
+        <div><div class="section-eyebrow">OFFERS FOR YOU</div><h2>Deals you may like</h2><p>Explore discounted products before completing your purchase.</p></div>
+        <a href="deals.html">View all deals →</a>
+      </div>
+      <div id="checkoutDealGrid" class="checkout-deal-grid"></div>
+    </section>
+
+    <section id="checkoutRecommendations" class="checkout-recommendations" style="display:none">
+      <div class="recommendation-heading"><div><div class="section-eyebrow">KEEP SHOPPING</div><h2>Buy it again</h2><p>Pick up products from your recent purchase or explore something similar.</p></div><a href="products.html">See all products →</a></div>
+      <div id="buyAgainGrid" class="buy-again-grid"></div>
+    </section>
+
+    <section class="checkout-sponsored">
+      <div class="sponsored-label">Sponsored</div>
+      <div class="sponsored-card"><div class="sponsored-copy"><strong>More products worth exploring</strong><span>Shop across 311 CloudMart products with verified product pages and category-specific details.</span></div><a href="products.html" class="btn secondary">Explore All Products</a></div>
+    </section>
+  </div>
+</main>
+
+<footer class="footer"><div class="container footer-grid"><div><h3>CloudMart</h3><p>AWS learning marketplace project.</p></div><div><h3>Shop</h3><a href="products.html">All Products</a><a href="deals.html">Deals</a></div><div><h3>Categories</h3><a href="category-shoes.html">Shoes</a><a href="category-furniture.html">Furniture</a><a href="category-smartphones.html">Smartphones</a><a href="category-watches.html">Watches</a></div><div><h3>Account</h3><a href="orders.html">Orders</a><a href="cart.html">Cart</a><a href="login.html">Customer Login</a></div></div><div class="container copyright">© 2026 CloudMart</div></footer>
+<div id="toast" class="toast"></div>
+<script src="config.js"></script><script src="product-data.js"></script><script src="script.js"></script>
+</body>
+</html>
