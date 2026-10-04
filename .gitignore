@@ -34,3 +34,4 @@ Thumbs.db
 
 # Local secret files
 secrets/
+database/*_backup.sql
