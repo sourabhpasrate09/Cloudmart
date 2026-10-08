@@ -1,0 +1,62 @@
+name: CloudMart CD - Build and Push to ECR
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    env:
+      AWS_REGION: ap-south-1
+      BACKEND_REPOSITORY: cloudmart-backend
+      FRONTEND_REPOSITORY: cloudmart-frontend
+
+    steps:
+
+      - name: Checkout CloudMart
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials using OIDC
+        uses: aws-actions/configure-aws-credentials@v5
+        with:
+          role-to-assume: arn:aws:iam::638175140656:role/CloudMart-GitHubActions-ECR-Role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build and push backend image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -f docker/backend.Dockerfile \
+            -t $REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG \
+            -t $REGISTRY/$BACKEND_REPOSITORY:latest \
+            .
+
+          docker push $REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$BACKEND_REPOSITORY:latest
+
+      - name: Build and push frontend image
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build \
+            -f docker/frontend.Dockerfile \
+            -t $REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG \
+            -t $REGISTRY/$FRONTEND_REPOSITORY:latest \
+            .
+
+          docker push $REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG
+          docker push $REGISTRY/$FRONTEND_REPOSITORY:latest
