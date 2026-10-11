@@ -1,9 +1,12 @@
+
 name: CloudMart CD - Build and Push to ECR
 
 on:
   push:
     branches:
       - main
+    tags:
+      - 'v*.*.*'
 
 permissions:
   id-token: write
@@ -19,7 +22,6 @@ jobs:
       FRONTEND_REPOSITORY: cloudmart-frontend
 
     steps:
-
       - name: Checkout CloudMart
         uses: actions/checkout@v4
 
@@ -38,25 +40,47 @@ jobs:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build \
-            -f docker/backend.Dockerfile \
-            -t $REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG \
-            -t $REGISTRY/$BACKEND_REPOSITORY:latest \
-            .
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_TAG="$GITHUB_REF_NAME"
+            docker build \
+              -f docker/backend.Dockerfile \
+              -t "$REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG" \
+              -t "$REGISTRY/$BACKEND_REPOSITORY:latest" \
+              -t "$REGISTRY/$BACKEND_REPOSITORY:$VERSION_TAG" \
+              .
+            docker push "$REGISTRY/$BACKEND_REPOSITORY:$VERSION_TAG"
+          else
+            docker build \
+              -f docker/backend.Dockerfile \
+              -t "$REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG" \
+              -t "$REGISTRY/$BACKEND_REPOSITORY:latest" \
+              .
+          fi
 
-          docker push $REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$BACKEND_REPOSITORY:latest
+          docker push "$REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG"
+          docker push "$REGISTRY/$BACKEND_REPOSITORY:latest"
 
       - name: Build and push frontend image
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
-          docker build \
-            -f docker/frontend.Dockerfile \
-            -t $REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG \
-            -t $REGISTRY/$FRONTEND_REPOSITORY:latest \
-            .
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            VERSION_TAG="$GITHUB_REF_NAME"
+            docker build \
+              -f docker/frontend.Dockerfile \
+              -t "$REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG" \
+              -t "$REGISTRY/$FRONTEND_REPOSITORY:latest" \
+              -t "$REGISTRY/$FRONTEND_REPOSITORY:$VERSION_TAG" \
+              .
+            docker push "$REGISTRY/$FRONTEND_REPOSITORY:$VERSION_TAG"
+          else
+            docker build \
+              -f docker/frontend.Dockerfile \
+              -t "$REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG" \
+              -t "$REGISTRY/$FRONTEND_REPOSITORY:latest" \
+              .
+          fi
 
-          docker push $REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG
-          docker push $REGISTRY/$FRONTEND_REPOSITORY:latest
+          docker push "$REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG"
+          docker push "$REGISTRY/$FRONTEND_REPOSITORY:latest"
