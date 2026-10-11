@@ -1,12 +1,10 @@
 
-name: CloudMart CD - Build and Push to ECR
+name: CloudMart CD
 
 on:
   push:
     branches:
       - main
-    tags:
-      - 'v*.*.*'
 
 permissions:
   id-token: write
@@ -16,71 +14,24 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
-    env:
-      AWS_REGION: ap-south-1
-      BACKEND_REPOSITORY: cloudmart-backend
-      FRONTEND_REPOSITORY: cloudmart-frontend
-
     steps:
-      - name: Checkout CloudMart
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Configure AWS credentials using OIDC
+      - name: Configure AWS
         uses: aws-actions/configure-aws-credentials@v5
         with:
           role-to-assume: arn:aws:iam::638175140656:role/CloudMart-GitHubActions-ECR-Role
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: ap-south-1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
+      - name: Login to ECR
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Build and push backend image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+      - name: Build and push backend
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            VERSION_TAG="$GITHUB_REF_NAME"
-            docker build \
-              -f docker/backend.Dockerfile \
-              -t "$REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG" \
-              -t "$REGISTRY/$BACKEND_REPOSITORY:latest" \
-              -t "$REGISTRY/$BACKEND_REPOSITORY:$VERSION_TAG" \
-              .
-            docker push "$REGISTRY/$BACKEND_REPOSITORY:$VERSION_TAG"
-          else
-            docker build \
-              -f docker/backend.Dockerfile \
-              -t "$REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG" \
-              -t "$REGISTRY/$BACKEND_REPOSITORY:latest" \
-              .
-          fi
+          docker build -f docker/backend.Dockerfile -t 638175140656.dkr.ecr.ap-south-1.amazonaws.com/cloudmart-backend:V1.0.0 .
+          docker push 638175140656.dkr.ecr.ap-south-1.amazonaws.com/cloudmart-backend:V1.0.0
 
-          docker push "$REGISTRY/$BACKEND_REPOSITORY:$IMAGE_TAG"
-          docker push "$REGISTRY/$BACKEND_REPOSITORY:latest"
-
-      - name: Build and push frontend image
-        env:
-          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          IMAGE_TAG: ${{ github.sha }}
+      - name: Build and push frontend
         run: |
-          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
-            VERSION_TAG="$GITHUB_REF_NAME"
-            docker build \
-              -f docker/frontend.Dockerfile \
-              -t "$REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG" \
-              -t "$REGISTRY/$FRONTEND_REPOSITORY:latest" \
-              -t "$REGISTRY/$FRONTEND_REPOSITORY:$VERSION_TAG" \
-              .
-            docker push "$REGISTRY/$FRONTEND_REPOSITORY:$VERSION_TAG"
-          else
-            docker build \
-              -f docker/frontend.Dockerfile \
-              -t "$REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG" \
-              -t "$REGISTRY/$FRONTEND_REPOSITORY:latest" \
-              .
-          fi
-
-          docker push "$REGISTRY/$FRONTEND_REPOSITORY:$IMAGE_TAG"
-          docker push "$REGISTRY/$FRONTEND_REPOSITORY:latest"
+          docker build -f docker/frontend.Dockerfile -t 638175140656.dkr.ecr.ap-south-1.amazonaws.com/cloudmart-frontend:V1.0.0 .
+          docker push 638175140656.dkr.ecr.ap-south-1.amazonaws.com/cloudmart-frontend:V1.0.0
